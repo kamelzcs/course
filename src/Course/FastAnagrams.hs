@@ -7,6 +7,7 @@ import Course.Core
 import Course.List
 import Course.Functor
 import qualified Data.Set as S
+import qualified Data.List as D
 
 -- Return all anagrams of the given string
 -- that appear in the given dictionary file.
@@ -14,8 +15,8 @@ fastAnagrams ::
   Chars
   -> Filename
   -> IO (List Chars)
-fastAnagrams =
-  error "todo: Course.FastAnagrams#fastAnagrams"
+fastAnagrams name f =
+  map ncString . filter (== NoCaseString name) . map NoCaseString . lines <$> readFile f
 
 newtype NoCaseString =
   NoCaseString {
@@ -23,7 +24,7 @@ newtype NoCaseString =
   }
 
 instance Eq NoCaseString where
-  (==) = (==) `on` map toLower . ncString
+  (==) = (==) `on` (listh . D.sort . hlist . map toLower) . ncString
 
 instance Show NoCaseString where
   show = show . ncString
